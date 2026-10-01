@@ -40,9 +40,13 @@ Uma configuração de teste com `--basetemp=.pytest_tmp` foi removida de `pyproj
 
 ## Inspeção visual
 
-Não foi realizada inspeção visual em navegador nesta revisão. A aplicação foi coberta por testes nativos do Streamlit; isso verifica carregamento e fluxo de componentes, mas não substitui conferência humana de layout, contraste e responsividade.
+O autor realizou uma avaliação visual pessoal da aplicação e aprovou sua apresentação para o MVP.
+
+Esse registro se limita à avaliação visual e à aprovação informadas pelo autor. Não afirma que foram realizados testes de responsividade ou acessibilidade, revisão linha a linha do código ou outros procedimentos não confirmados. Os testes nativos do Streamlit verificam carregamento e fluxos de componentes; eles são evidência automatizada separada da avaliação visual do autor.
 
 ## Pendências
 
-- Fazer uma conferência visual manual em navegador antes de gravar uma apresentação.
-- Não há licença escolhida, publicação, URL de demonstração ou commit nesta etapa, por decisão de escopo.
+- Criar screenshots reais da aplicação para apoiar a apresentação no repositório.
+- Configurar hospedagem online e registrar a URL de demonstração.
+- Preparar e publicar uma apresentação do projeto no LinkedIn.
+- A aplicação está aprovada para o MVP local; hospedagem e divulgação continuam pendentes.
