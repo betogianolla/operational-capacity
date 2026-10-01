@@ -1,41 +1,85 @@
-# Simulador de Capacidade Operacional
+# Operational Capacity Simulator
 
-Aplicação local para explorar quanto uma operação baseada em clientes ativos pode crescer com a equipe disponível e como a automação altera sua capacidade humana.
+[Leia em português](README.pt-BR.md) · [Portfolio case in Portuguese](docs/portfolio-case.md) · [Portfolio case in English](docs/portfolio-case.en.md)
 
-## Problema de negócio
+**Author and project lead: Roberto Gianolla Junior**
 
-Gestores de operações precisam relacionar volume, tempo de atendimento, automação e disponibilidade de equipe para entender limites de capacidade. O simulador compara um contrafactual manual com o processo automatizado, sem transformar horas liberadas em economia financeira ou decisões de pessoal.
+> “Project conceived and developed under the guidance of Roberto Gianolla Junior, responsible for directing the business problem, following deliveries, and refining the solution.”
 
-## O que a aplicação permite decidir
+## 1. Identified problem
 
-- Visualizar demanda, utilização e horas humanas do histórico sintético.
-- Comparar capacidade manual e automatizada para premissas explícitas.
-- Identificar quando a utilização supera a meta ou as horas requeridas superam as disponíveis.
-- Explorar crescimento composto da base por três anos e o déficit estimado de pessoas.
+How can an operations team assess whether its current staff can absorb demand growth, and how much automation expands operational capacity? This project addresses that decision problem through a local, deterministic capacity model. It uses **active customers** as the demonstrative unit of the served base and compares a manual counterfactual with a partially automated process.
 
-Essas saídas apoiam discussão de capacidade humana. Não são previsão validada, recomendação de contratação/demissão ou estimativa de retorno financeiro.
+The data and outputs are synthetic and simulated. They do not describe a real company, realized savings, staffing decisions, or observed business impact.
 
-## Funcionalidades
+## 2. Solution objective
 
-- Histórico mensal de 24 meses de dados `SYNTHETIC_FICTITIOUS`.
-- Simulador de premissas com validação de limites e confirmação para automação acima da elegibilidade observada.
-- Comparação de horas, utilização, pessoas necessárias, demanda máxima sustentável, margem de crescimento e capacidade liberada equivalente.
-- Projeções compostas de ano-base mais três anos.
-- Downloads CSV do histórico consolidado e dos cenários hipotéticos, com origem e hipóteses identificadas.
+The Streamlit application helps managers inspect a synthetic operating history, alter explicit assumptions, compare manual and automated capacity, and project three years of compounded growth. It supports a capacity discussion; it is not a validated statistical forecast, causal inference, queueing model, or optimization algorithm.
 
-## Stack e arquitetura
+## Author’s professional contribution
 
-Python 3.14.3 concentra o domínio e o gerador. DuckDB 1.5.6 consolida os CSVs sintéticos via SQL. Streamlit 1.64.0 apresenta a interface. pytest 9.1.1 valida regras e fluxos da interface.
+Roberto Gianolla Junior identified and selected the business problem, defined the decision-support objective, and directed the iterative scope recorded in the project documentation. Concrete examples include choosing **active customers** as the base unit, requiring a distinction between automation eligibility and actual adoption, excluding financial savings and staffing recommendations, and requiring explicit treatment of rework, zero-demand cases, and non-applicable results.
 
-```text
-CSVs sintéticos → consultas DuckDB → motor Python puro → Streamlit / CSVs em memória
-```
+The project history also records guidance to keep the calculation engine independent from the interface, to preserve user-edited scenarios when the reference month changes, and to refine the interface with pt-BR number formatting, percentage-point differences, grouped inputs, and explicit warnings when utilization exceeds its target. These decisions are documented in [docs/decisions.md](docs/decisions.md), [docs/briefing.md](docs/briefing.md), and [docs/interface.md](docs/interface.md).
 
-As fórmulas estão em `src/operational_capacity/calculations.py`; a interface não as reimplementa. Consulte [docs/data.md](docs/data.md) e [docs/interface.md](docs/interface.md) para detalhes.
+This statement describes direction, delivery follow-up, requested refinements, and critical interpretation of indicators. It does not claim that the author performed a line-by-line code review, personally executed every automated test, or wrote all code manually.
 
-## Instalação e execução no Windows
+## 3. Translating the problem into an analytical model
 
-Pré-requisito: Python **3.14.3** instalado com o lançador do Windows (`py`). Em um terminal novo, na raiz do projeto:
+The model is deterministic: the same inputs produce the same outputs.
+
+- **Demand is proportional to the served base:** `D = B × f`, where `B` is active customers and `f` is interactions per active customer per month.
+- **Human time after automation is a weighted average:** `t_auto = (1 − a) × t_manual + a × (t_residual + r × t_rework)`. `a` is actual automation adoption, not eligibility. The `r × t_rework` term is the expected additional rework time per automated interaction; it is an expected value and does not require independence between events.
+- **Minutes become monthly hours:** `H = D × t / 60`.
+- **Capacity and utilization:** planned capacity is `C_plan = P × h × u_target`, while effective utilization is `U_eff = H / (P × h)`. The target is a planning threshold; it is not the same measure as effective utilization.
+- **Staffing is discrete:** `P_required = ceil(H / (h × u_target))`. Intermediate calculations keep precision; only the staffing requirement is rounded up.
+- **Sustainable demand:** `D_max = C_plan × 60 / t`, when human time is greater than zero.
+- **Growth scenarios:** `B_y = B_0 × (1 + g)^y`. Only the base grows compoundingly; all other assumptions remain constant by scenario assumption.
+
+Historical rates are measured from the synthetic data. Simulation values are selected assumptions, even when initialized from a historical month. Automation eligibility is a reference limit; actual adoption is the input used by the engine.
+
+## 4. Relevant decisions and rationale
+
+- **Synthetic, reproducible data:** 24 months and 47,074 fictitious interactions avoid confidential information while allowing reproducible demonstrations.
+- **Manual counterfactual:** the monthly manual average is applied to automated interactions. This makes the comparison auditable, but does not establish causality.
+- **Rework is additional to residual time:** this avoids double counting.
+- **Eligibility differs from adoption:** simulating adoption above observed eligibility requires an explicit expansion assumption.
+- **No infinite operational result:** when human time is zero, sustainable capacity and related comparison metrics are shown as not applicable with an explanation.
+
+## 5. Solution verification
+
+Automated tests verify formulas, validation rules, edge cases, compounded projections, CSV contents, deterministic data generation, SQL aggregation, and key Streamlit flows. Known cases verify expected results. The data layer also reconciles the engine’s monthly human hours with the direct sum of interaction times; the documented maximum difference was `1.1368683772161603e-12` hours, consistent with floating-point precision.
+
+Reproduction was checked in a new environment using the documented installation, data generation, test, and Streamlit startup commands. The documented review records a 36-test passing run and HTTP 200 response from a local application server. Streamlit’s native tests verify component loading and flows, but do not replace human visual evaluation. Browser-based visual inspection was not recorded as completed in the review.
+
+## 6. Demonstrative scenario
+
+For the verified reference case—10,000 active customers, 0.2 interactions per customer/month, 30 manual minutes, 60% automation, 5 residual minutes, 10% rework with 10 additional minutes, 10 people, 160 available hours/person/month, and 80% target utilization—the model returns:
+
+- 2,000 interactions/month; 15.6 human minutes per interaction after automation;
+- 1,000 manual hours versus 520 automated hours; 1,280 planned team hours;
+- 62.5% manual versus 32.5% automated effective utilization;
+- 8 manual versus 5 automated required people;
+- 2,560 manual versus 4,923.076923 automated sustainable interactions/month;
+- 480 released human hours and 3.75 equivalent capacity people.
+
+These are simulated outputs used to verify the model, not realized impact.
+
+## 7. Using the results in management decisions
+
+The application distinguishes **capacity increase**—the percentage change in sustainable demand between automated and manual processes—from **growth margin**—the room between sustainable demand and current demand. It also distinguishes continuous **equivalent capacity people** (released hours divided by planned capacity per person) from the integer **required people** count. Neither measure is a layoff, hire, avoided hire, or financial-saving recommendation.
+
+Managers can use the comparison to ask whether a selected growth scenario exceeds the utilization target, when the available team is insufficient, and which assumptions warrant operational validation before a decision.
+
+## 8. Limitations
+
+The model represents human capacity only. It does not model systems, budgets, quality, queues, service levels, lead times, individual productivity, or other constraints. It is not evidence of causal automation gains or a validated forecast. Synthetic data demonstrate the method; they do not calibrate a real operation.
+
+## Architecture and execution
+
+`app.py` is the application entry point. The Streamlit interface composes a pure Python calculation engine, DuckDB-based local CSV queries, and in-memory CSV exports. The synthetic CSVs are versioned in `data/`, so a new clone includes the demonstration data.
+
+Runtime dependencies are `duckdb==1.5.6` and `streamlit==1.64.0`. Python 3.13 is recommended for Linux hosting; the project declares Python 3.11 through 3.14 compatibility. For local Windows execution with the validated Python 3.14.3 environment:
 
 ```powershell
 py -3.14 -m venv .venv
@@ -45,44 +89,8 @@ py -3.14 -m venv .venv
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-O último comando abre a interface local e não depende de `PYTHONPATH` ou de um ambiente virtual previamente ativado. Se os dados estiverem ausentes, a tela também informa o comando de geração.
+For details, see [data documentation](docs/data.md), [interface documentation](docs/interface.md), and the [review record](docs/review.md).
 
-## Preparação para Linux e hospedagem
+## AI support
 
-O ponto de entrada é `app.py`, na raiz do repositório. A aplicação localiza `src/` e `data/` a partir do próprio arquivo com `pathlib`; não depende de `E:\\`, de separadores do Windows, de variáveis locais ou de credenciais.
-
-Para uma hospedagem Linux, recomenda-se **Python 3.13**. O projeto aceita Python 3.11 a 3.14 (`pyproject.toml`), enquanto as versões fixadas de Streamlit e DuckDB declaram suporte a Python 3.13. Em um ambiente Linux novo, instale apenas as dependências de execução e inicie a partir da raiz clonada:
-
-```bash
-python3.13 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python -m streamlit run app.py
-```
-
-Os CSVs sintéticos da demonstração (`data/monthly_capacity.csv`, `data/interactions.csv` e seus metadados) são versionados. Assim, eles já estarão presentes em um clone novo e não são regenerados a cada interação. Caso sejam removidos, a mensagem da aplicação informa o comando reproduzível `python src/operational_capacity/synthetic_data.py --output-dir data`.
-
-Esta preparação não configura hospedagem, segredo, serviço externo nem variável de ambiente.
-
-## Exemplo numérico verificado
-
-O motor foi executado e testado com 10.000 clientes ativos, 0,2 atendimentos por cliente/mês, 30 min manuais, 60% de automação, 5 min residuais, 10% de retrabalho de 10 min, 10 pessoas, 160 h por pessoa e utilização-alvo de 80%.
-
-Resultados simulados: 2.000 atendimentos/mês; 1.000 h manuais; 520 h automatizadas; 480 h liberadas; utilização de 62,5% versus 32,5%; 8 versus 5 pessoas necessárias; e capacidade máxima de 2.560 versus 4.923,076923 atendimentos/mês. O equivalente contínuo de capacidade liberada é 3,75 pessoas; a diferença entre dimensionamentos inteiros é 3 pessoas — métricas distintas.
-
-## Dados sintéticos e IA no desenvolvimento
-
-Os dados são determinísticos, fictícios e marcados como `SYNTHETIC_FICTITIOUS`; não representam empresas, pessoas ou impactos reais. A semente e as distribuições estão documentadas em [docs/data.md](docs/data.md).
-
-IA generativa foi usada como ferramenta de apoio ao desenvolvimento deste projeto, incluindo elaboração e refinamento de código, testes e documentação. Os resultados registrados são os efetivamente executados nas verificações documentadas; a IA não fornece evidência de impacto operacional real.
-
-## Hipóteses e limitações
-
-- O modelo mede somente capacidade humana.
-- Sistemas, orçamento, qualidade, filas, prazos e outros gargalos não são modelados.
-- O contrafactual manual assume que o tempo manual médio se aplicaria aos atendimentos automatizados.
-- Médias sem observações permanecem ausentes; quando necessárias, usam premissas sintéticas explícitas.
-- Capacidade equivalente não é economia realizada, contratação evitada ou demissão.
-
-## Verificação atual
-
-Consulte [docs/review.md](docs/review.md) para o parecer de revisão, verificações automatizadas e limites da inspeção visual.
+“AI tools supported model structuring, implementation, and technical review, under the author’s guidance.” The project was conceived and led by Roberto Gianolla Junior, with iterative delivery assessment, result verification, and user-experience refinement. AI is not presented as the principal author, and synthetic outputs are not presented as real business impact.
