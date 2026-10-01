@@ -1,0 +1,12 @@
+{
+  "configuration": {
+    "month_count": 24,
+    "seed": 20260930,
+    "start_month": "2024-01-01"
+  },
+  "data_label": "SYNTHETIC_FICTITIOUS",
+  "description": "Dados integralmente fictícios para demonstração de capacidade humana.",
+  "month_count": 24,
+  "seed": 20260930,
+  "start_month": "2024-01-01"
+}

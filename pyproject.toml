@@ -1,0 +1,11 @@
+[project]
+name = "operational-capacity"
+version = "0.1.0"
+description = "Motor de cálculo para o Simulador de Capacidade Operacional."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"
