@@ -47,6 +47,22 @@ py -3.14 -m venv .venv
 
 O último comando abre a interface local e não depende de `PYTHONPATH` ou de um ambiente virtual previamente ativado. Se os dados estiverem ausentes, a tela também informa o comando de geração.
 
+## Preparação para Linux e hospedagem
+
+O ponto de entrada é `app.py`, na raiz do repositório. A aplicação localiza `src/` e `data/` a partir do próprio arquivo com `pathlib`; não depende de `E:\\`, de separadores do Windows, de variáveis locais ou de credenciais.
+
+Para uma hospedagem Linux, recomenda-se **Python 3.13**. O projeto aceita Python 3.11 a 3.14 (`pyproject.toml`), enquanto as versões fixadas de Streamlit e DuckDB declaram suporte a Python 3.13. Em um ambiente Linux novo, instale apenas as dependências de execução e inicie a partir da raiz clonada:
+
+```bash
+python3.13 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m streamlit run app.py
+```
+
+Os CSVs sintéticos da demonstração (`data/monthly_capacity.csv`, `data/interactions.csv` e seus metadados) são versionados. Assim, eles já estarão presentes em um clone novo e não são regenerados a cada interação. Caso sejam removidos, a mensagem da aplicação informa o comando reproduzível `python src/operational_capacity/synthetic_data.py --output-dir data`.
+
+Esta preparação não configura hospedagem, segredo, serviço externo nem variável de ambiente.
+
 ## Exemplo numérico verificado
 
 O motor foi executado e testado com 10.000 clientes ativos, 0,2 atendimentos por cliente/mês, 30 min manuais, 60% de automação, 5 min residuais, 10% de retrabalho de 10 min, 10 pessoas, 160 h por pessoa e utilização-alvo de 80%.

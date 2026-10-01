@@ -8,7 +8,7 @@ Construir uma aplicação demonstrável para estimar quanto uma operação basea
 
 ## Stack e versões
 
-- Linguagem: Python 3.14.3.
+- Linguagem: Python 3.11 a 3.14; Python 3.13 é recomendado para hospedagem e Python 3.14.3 foi usado na validação local.
 - Interface: Streamlit 1.64.0.
 - Consultas SQL locais: DuckDB 1.5.6.
 - Testes: pytest 9.1.1.

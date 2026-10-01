@@ -49,7 +49,7 @@ def _month_label(month: str) -> str:
 def _load_analyses() -> list[MonthlyCapacityAnalysis] | None:
     if not MONTHLY_DATA_PATH.exists() or not INTERACTIONS_DATA_PATH.exists():
         st.error("Os dados sintéticos ainda não foram gerados.")
-        st.code(".\\.venv\\Scripts\\python.exe src\\operational_capacity\\synthetic_data.py --output-dir data", language="powershell")
+        st.code("python src/operational_capacity/synthetic_data.py --output-dir data", language="bash")
         return None
     try:
         return analyze_monthly_capacity(MONTHLY_DATA_PATH, INTERACTIONS_DATA_PATH)
