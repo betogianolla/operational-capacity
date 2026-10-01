@@ -2,6 +2,8 @@
 
 [Leia em português](README.pt-BR.md) · [Portfolio case in Portuguese](docs/portfolio-case.md) · [Portfolio case in English](docs/portfolio-case.en.md)
 
+**[Open the live demo](https://operational-capacity.streamlit.app/)** · Hosted publicly on Streamlit Community Cloud.
+
 **Author and project lead: Roberto Gianolla Junior**
 
 > “Project conceived and developed under the guidance of Roberto Gianolla Junior, responsible for directing the business problem, following deliveries, and refining the solution.”
@@ -50,7 +52,7 @@ Historical rates are measured from the synthetic data. Simulation values are sel
 
 Automated tests verify formulas, validation rules, edge cases, compounded projections, CSV contents, deterministic data generation, SQL aggregation, and key Streamlit flows. Known cases verify expected results. The data layer also reconciles the engine’s monthly human hours with the direct sum of interaction times; the documented maximum difference was `1.1368683772161603e-12` hours, consistent with floating-point precision.
 
-Reproduction was checked in a new environment using the documented installation, data generation, test, and Streamlit startup commands. The documented review records a 36-test passing run and HTTP 200 response from a local application server. Streamlit’s native tests verify component loading and flows, but do not replace human visual evaluation. Browser-based visual inspection was not recorded as completed in the review.
+Reproduction was checked in a new environment using the documented installation, data generation, test, and Streamlit startup commands. The documented review records a 36-test passing run and HTTP 200 response from a local application server. The author reports that the hosted app loaded without sign-in and that the history, simulator, projections, and downloads worked. This is recorded separately from the HTTP response observed during this review; no interactive browser was available to repeat those flows. Deployment details and verification limits are in [docs/deployment.md](docs/deployment.md).
 
 ## 6. Demonstrative scenario
 

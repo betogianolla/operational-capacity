@@ -47,6 +47,13 @@ Esse registro se limita à avaliação visual e à aprovação informadas pelo a
 ## Pendências
 
 - Criar screenshots reais da aplicação para apoiar a apresentação no repositório.
-- Configurar hospedagem online e registrar a URL de demonstração.
 - Preparar e publicar uma apresentação do projeto no LinkedIn.
-- A aplicação está aprovada para o MVP local; hospedagem e divulgação continuam pendentes.
+- Confirmar a versão efetiva de Python configurada no Streamlit Community Cloud; os logs/configurações da conta não foram inspecionados.
+
+## Publicação e verificação online — 2026-10-01
+
+- Demonstração pública no Streamlit Community Cloud: <https://operational-capacity.streamlit.app/>.
+- Configuração informada para publicação: repositório `betogianolla/operational-capacity`, branch `main`, arquivo `app.py`; Python 3.13 foi a versão solicitada para a implantação. A versão efetivamente ativa não foi conferida nos logs ou nas configurações do Cloud.
+- O autor confirmou que abriu a aplicação sem login e que histórico, simulador, projeções e downloads funcionaram. Esse é um relato de avaliação interativa feito pelo autor.
+- Uma requisição HTTP feita nesta revisão recebeu `200` e HTML do shell do Streamlit. Isso confirma resposta HTTP, não execução dos fluxos na interface; o agente não dispunha de navegador interativo. Os testes automatizados existentes não foram repetidos para esta atualização documental.
+- A demonstração hospedada foi aprovada pelo autor para apresentação do MVP. Ainda não há screenshots nem publicação no LinkedIn.

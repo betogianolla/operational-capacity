@@ -2,6 +2,8 @@
 
 [Read in English](README.md) · [Estudo de caso em português](docs/portfolio-case.md) · [Portfolio case in English](docs/portfolio-case.en.md)
 
+**[Abrir demonstração online](https://operational-capacity.streamlit.app/)** · Hospedada publicamente no Streamlit Community Cloud.
+
 **Autor e responsável pela condução do projeto: Roberto Gianolla Junior**
 
 > “Projeto concebido e desenvolvido sob a orientação de Roberto Gianolla Junior, responsável pelo direcionamento do problema de negócio, acompanhamento das entregas e refinamento da solução.”
@@ -50,7 +52,7 @@ Taxas históricas são medidas nos dados sintéticos. Valores da simulação sã
 
 Testes automatizados verificam fórmulas, regras de validação, casos extremos, projeções compostas, conteúdo dos CSVs, geração determinística, agregação SQL e fluxos relevantes do Streamlit. Casos conhecidos conferem resultados esperados. A camada de dados também reconcilia as horas humanas mensais do motor com a soma direta dos tempos dos atendimentos; a maior diferença documentada foi `1,1368683772161603e-12` hora, compatível com precisão de ponto flutuante.
 
-A reprodução foi verificada em ambiente novo com os comandos documentados de instalação, geração, testes e inicialização do Streamlit. O parecer registra uma execução aprovada de 36 testes e resposta HTTP 200 do servidor local. Os testes nativos do Streamlit verificam carregamento e fluxos, mas não substituem avaliação visual humana. A inspeção visual em navegador não foi registrada como concluída no parecer.
+A reprodução foi verificada em ambiente novo com os comandos documentados de instalação, geração, testes e inicialização do Streamlit. O parecer registra uma execução aprovada de 36 testes e resposta HTTP 200 do servidor local. O autor relata que a aplicação hospedada carregou sem exigir login e que o histórico, o simulador, as projeções e os downloads funcionaram. Esse relato é registrado separadamente da resposta HTTP observada nesta revisão; não havia navegador interativo disponível para repetir esses fluxos. A configuração e os limites da verificação estão em [docs/deployment.md](docs/deployment.md).
 
 ## 6. Cenário demonstrativo
 
