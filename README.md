@@ -18,6 +18,10 @@ The data and outputs are synthetic and simulated. They do not describe a real co
 
 The Streamlit application helps managers inspect a synthetic operating history, alter explicit assumptions, compare manual and automated capacity, and project three years of compounded growth. It supports a capacity discussion; it is not a validated statistical forecast, causal inference, queueing model, or optimization algorithm.
 
+![Growth simulator with its assumptions, observed automation eligibility, and scenario summary.](assets/simulator.png)
+
+*The simulator assumptions and scenario summary shown above use synthetic data.*
+
 ## Author’s professional contribution
 
 Roberto Gianolla Junior identified and selected the business problem, defined the decision-support objective, and directed the iterative scope recorded in the project documentation. Concrete examples include choosing **active customers** as the base unit, requiring a distinction between automation eligibility and actual adoption, excluding financial savings and staffing recommendations, and requiring explicit treatment of rework, zero-demand cases, and non-applicable results.

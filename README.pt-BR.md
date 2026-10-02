@@ -18,6 +18,10 @@ Os dados e resultados são sintéticos e simulados. Não descrevem uma empresa r
 
 A aplicação Streamlit permite ao gestor inspecionar um histórico sintético, alterar premissas explícitas, comparar capacidade manual e automatizada e projetar três anos de crescimento composto. Ela apoia uma discussão de capacidade; não é previsão estatística validada, inferência causal, modelo de filas ou algoritmo de otimização.
 
+![Simulador de crescimento com premissas, elegibilidade observada para automação e resumo do cenário.](assets/simulator.png)
+
+*As premissas e o resumo do cenário exibidos acima usam dados sintéticos.*
+
 ## Contribuição profissional do autor
 
 Roberto Gianolla Junior identificou e escolheu o problema de negócio, definiu o objetivo de apoio à decisão e conduziu o escopo iterativo registrado na documentação. Exemplos concretos incluem a escolha de **clientes ativos** como unidade da base, a exigência de distinguir elegibilidade de adoção efetiva da automação, a exclusão de economia financeira e recomendações de pessoal, e o tratamento explícito de retrabalho, demanda zero e resultados não aplicáveis.
